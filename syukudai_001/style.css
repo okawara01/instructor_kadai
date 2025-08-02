@@ -1,0 +1,182 @@
+/* PC、スマホ共通スタイル */
+ * {
+   box-sizing: border-box;
+ }
+
+p {
+  font-size: 15px;
+}
+
+body {
+  max-width: 1080px;
+  margin: 0 auto 0 auto;  
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+
+/*コラム一覧レイアウト*/
+.card-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: #EAE7E1;
+    padding: 20px;
+}
+
+.card {
+    overflow: hidden;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.card-content {
+    padding: 16px;
+}
+
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+
+.category-label-1 {
+    background-color: #4a9f69;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.category-label-2 {
+    background-color: #645aa9;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.category-label-3 {
+    background-color: #e0627e;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.post-date {
+    background-color: #eee;
+    color: #333;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.icon-calendar::before {
+    content: '📅';  /* アイコン（疑似要素で仮対応） */
+}
+
+.post-date {
+  background-color: #d4d1d1;
+}
+
+
+h3 {
+  font-size: 14px;
+  margin: 0 0 8px;
+  line-height: 1.4;
+  padding: 10px 0;
+}
+
+.meta {
+    font-size: 10px;
+    color: #666;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.date {
+    font-size: 12px;
+    color: #999;
+    text-align: right;
+}
+
+
+/*ヘッダーナビゲーションレイアウト*/
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.navi ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 10px 20px;
+  margin: 0;
+  background: #f9f9f9;
+  border-radius: 30px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.navi a {
+  text-decoration: none;
+  color: #333;
+  padding: 5px 10px;
+}
+
+.navi a:hover {
+  color: #d33;
+}
+
+.language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.language-switcher a {
+    text-decoration: none;
+    color: #333;
+}
+
+.language-switcher .active {
+    color: #9a2929;
+    pointer-events: none;
+}
+
+
+
+
+

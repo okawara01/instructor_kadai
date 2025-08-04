@@ -17,7 +17,7 @@ body {
 /*コラム一覧レイアウト*/
 .card-container {
     display: flex;
-    gap: 20px;
+    gap: 40px;
     justify-content: center;
     flex-wrap: wrap;
     background-color: #EAE7E1;
@@ -44,7 +44,7 @@ body {
 }
 
 .card-content {
-    padding: 16px;
+    padding: 16px 0 0 0;
 }
 
 .card-meta {
@@ -93,8 +93,8 @@ body {
     gap: 5px;
 }
 
-.icon-calendar::before {
-    content: '📅';  /* アイコン（疑似要素で仮対応） */
+.post-date::before {
+   content: '📅';  /* アイコン（疑似要素で仮対応） */
 }
 
 .post-date {
@@ -116,6 +116,32 @@ h3 {
     gap: 8px;
     margin-bottom: 10px;
     flex-wrap: wrap;
+}
+
+.meta2 ul {
+  font-size: 10px;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+
+.meta2 li {
+  position: relative;
+  padding-right: 10px;  /* 縦棒分のスペース */
+}
+
+.meta2 li::after {
+  content: "|";
+  position: absolute;
+  right: 0;
+  color: #999;  /* 縦棒の色 */
+}
+
+/* 最後のliだけ縦棒を消す */
+.meta2 li:last-child::after {
+  content: "";
 }
 
 .date {
@@ -176,7 +202,140 @@ h3 {
     pointer-events: none;
 }
 
+/*一覧レイアウト*/
+.news-section {
+  width: 100%;
+  max-width: 1080px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #EAE7E1;
+  padding: 40px 40px 40px 40px;
+}
 
+.news-section h2 {
+  color: #2d5a3f;
+  font-size: 36px;
+  margin: 0;
+}
 
+.news-section .sub-title {
+  font-size: 16px;
+  margin-top: 0px;
+}
 
+.news-container .arrow {
+  font-size: 14px;
+  color: #2d5a3f;
+  padding: 20px;
+}
+
+.news-link {
+  display: inline-block;
+  font-size: 12px;
+  text-decoration: none;
+  color: inherit; 
+  border-bottom: 1px solid #333;
+}
+
+.news-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.news-list li {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 12px 0;
+}
+
+.news-list .label {
+  background-color: #2d5a3f;
+  color: white;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-right: 12px;
+}
+
+.news-list .date {
+  font-size: 14px;
+  margin-right: 12px;
+  white-space: nowrap;
+  color: #333;
+}
+
+.news-list .title {
+  flex-grow: 1;
+  font-size: 14px;
+  padding:10px 280px 10px 10px;
+}
+
+.news-list .arrow {
+  font-size: 16px;
+  color: #2d5a3f;
+}
+
+/*FVレイアウト*/
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 40px;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.hero-text {
+  max-width: 400px;
+}
+
+.hero-text h1 {
+  font-size: 36px;
+  line-height: 1.4;
+  margin: 0 0 20px;
+}
+
+.hero-text p {
+  font-size: 10px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn.blue {
+  background: #0056ff;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2)
+}
+
+.btn.white {
+  background: white;
+  color: #0056ff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+.hero-image {
+  width: 100px;
+  height: auto;
+}
 

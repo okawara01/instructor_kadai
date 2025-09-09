@@ -1,0 +1,1552 @@
+/*ここから追記*/
+
+/* ==== weight presets ==== */
+:root{
+  --fw-base:   500;  /* 本文を少し太め（400だと細い時に便利） */
+  --fw-strong: 700;  /* 強調 */
+  --fw-head:   900;  /* 見出し（Notoは900が実在。強ければ700へ） */
+}
+
+/* 全体の既定を太めに */
+.diag{ 
+  font-family: 'Noto Sans JP', system-ui, -apple-system, 'Segoe UI',
+               'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+  font-weight: var(--fw-base); 
+}
+
+/* 強調 */
+.diag strong,
+.diag b{ font-weight: var(--fw-strong); }
+
+/* 見出し・ボタン */
+.diag h1, .diag h2, .diag h3,
+.diag .diag-sec__title .txt,
+.diag .btn{ font-weight: var(--fw-head); }
+
+/* 数字は Righteous（単一ウェイトなので weight 指定不要） */
+.font-num,
+.diag .diag-sec__title .num,
+.diag .card__figure-score,
+.diag .card__toc .n{
+  font-family: 'Righteous','Noto Sans JP',sans-serif;
+}
+
+.diag{
+  --accent:   #E53754;
+  --accent-2: #FF8FAB;
+  --text:     #000000;
+  --bg:       #F2F4F6;
+
+  /* 追加：rgba用のRGB（Aタイプ分） */
+  --accent-rgb: 229, 55, 84;
+  --accent2-rgb: 255, 143, 171;
+
+  /* ここを追加：カードなどで参照しているトークン */
+  --surface: #fff;
+  --radius:  16px;
+  --shadow:  0 8px 24px rgba(0,0,0,.06);
+  --muted:   #666;
+
+  color: var(--text);
+  background: var(--bg);
+}
+
+
+/* リンクやボタンの既定色も統一 */
+/* 既存の .diag a をこれに差し替え */
+.diag a:not(.btn) { 
+  color: var(--accent);
+}
+
+/* 念のため：ボタンの白文字を明示（visited や focus も） */
+.diag a.btn--solid,
+.diag a.btn--solid:visited,
+.diag a.btn--solid:focus {
+  color: #fff;
+}
+
+.btn--solid{ background-color:var(--accent); color:#fff; }
+.btn--ghost{ border:2px solid var(--accent); color:var(--accent); background:#fff; }
+
+/* 見出し番号やピル、チェックアイコンなどでアクセントを使う想定 */
+.diag-sec__title .num{ background: var(--accent); }
+.diag-sec__title .txt{ color: var(--accent); }
+
+/* 枠色（ページ外周） */
+.diag{ --frame:#B60014; }
+
+/* タイプ別色切替（必要に応じて調整OK） */
+.diag--b{ --accent:#0F6DD9; --accent-2:#8CC8FF; }
+.diag--c{ --accent:#00AE68; --accent-2:#74D4AE; }
+.diag--d{ --accent:#FF8000; --accent-2:#FFDB8C; }
+.diag--e{ --accent:#A76BC3; --accent-2:#CEADEB; }
+
+.diag__inner{
+  width: 94%;
+  max-width: 1440px;         /* ここを増やすだけで管理しやすい */
+  margin: 0 auto;
+  display:grid;
+  grid-template-columns:320px 1fr;
+  gap:32px;
+}
+
+/* 左：結果カード */
+.diag .card{
+  position:static; margin-top:10px;
+  background:var(--surface);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:20px;
+}
+
+.diag .card__badge{
+  display:inline-block; 
+  font-size:12px; 
+  color:#fff;
+  background-color:var(--accent);
+  border-radius:999px; 
+  padding:6px 12px;
+}
+
+.diag .card__type{ 
+  font-size:28px; 
+  font-weight:700; 
+  margin:10px 0 4px; }
+
+.diag .card__score{ 
+  color:var(--muted); 
+  margin-bottom:16px;
+}
+
+.diag .card__toc{ 
+  list-style:none; 
+  margin:0 0 16px; 
+  padding:0; 
+}
+
+.diag .card__toc li{ 
+  margin:6px 0; 
+}
+
+.diag .card__toc a{
+  text-decoration:none; 
+  color:#B7B7B7; 
+}
+.diag .card__cta{
+  display:block; 
+  text-align:center; 
+  margin-top:12px;
+  padding:12px 16px; 
+  border-radius:10px; 
+  font-weight:700; 
+  color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  text-decoration:none;
+}
+
+/* 右：本文 */
+.diag__content{
+  margin-left: 10px;
+}
+.diag__hero{ 
+  position:relative; 
+  isolation:isolate;
+ }
+
+.diag__eyebrow{ 
+  color:var(--accent); 
+  font-weight:700; 
+  margin:8px 0; 
+}
+
+.diag__title{ 
+  line-height:1.35; 
+  margin:6px 0 36px;
+  font-size: clamp(28px, 4vw, 50px);
+  font-weight: var(--fw-head);
+  letter-spacing: -0.01em; 
+}
+
+/* ==== Section title: 丸数字 + 白い角丸コンテナ（中に .txt と .pill） ==== */
+
+/* タイトル行の並び */
+.diag-sec__title{
+  display:flex;
+  align-items:center;
+  gap:0;                 /* すき間ゼロにして重ねやすく */
+  position:relative;
+  margin:0 0 12px;
+}
+
+.diag-sec{ 
+  padding:30px 0 40px;
+}
+
+/* 「1」の丸 */
+.diag-sec__title .num{
+  display:inline-grid;
+  place-items:center;
+  width:64px; height:64px;
+  border-radius:999px;
+  color:#fff;
+  background:var(--accent);
+  line-height:1;
+  z-index:2;
+  font-family:'Righteous','Noto Sans JP',sans-serif;
+  font-size:45px; font-weight:800; line-height:1;  
+}
+
+/* ←ここが“1つの白い角丸” */
+.diag-sec__title .sub-title{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:18px;
+  padding:16px 30px;
+  background:#fff;
+  padding-left:20px;                  /* 文字の左余白（丸との間） */
+  margin-left:-24px;                  /* ← ここで“重ねる”量を調整 */
+  border-radius:999px;
+  z-index:1;  
+}
+
+/* 左側の赤タイトル */
+.diag-sec__title .txt{
+  color:var(--accent);
+  font-weight:800;
+  font-size:20px;
+  line-height:1;
+  padding:0 0 0 20px;
+}
+
+/* 右側の補足テキスト（箱の中に並べるだけにする） */
+.diag-sec__title .pill{
+  font-size:16px;
+  font-weight:700;
+  color:var(--text);                 /* 目立ちすぎないトーン */
+  line-height:1;
+  /* 以前の枠/影/背景を打ち消す（過去のルールがあれば） */
+  border:none; 
+  background:transparent; 
+  box-shadow:none; 
+  padding:0; 
+  margin:0;
+}
+
+/* SP時の余白微調整 */
+/* SPでは重ねを解除（見やすさ優先） */
+@media (max-width:640px){
+  .diag-sec__title{ flex-wrap:wrap; align-items:flex-start; }
+  .diag-sec__title .sub-title{ margin-left:0; padding-left:12px; }
+  .diag-sec__title .txt{ font-size:17px; }
+  .diag-sec__title .pill{ font-size:12px; }
+}
+
+
+.diag__cta{
+  display:inline-block; 
+  padding:14px 22px; 
+  border-radius:12px; 
+  font-weight:700; 
+  color:#fff;
+  background:var(--accent);
+  text-decoration:none;
+}
+
+
+/* ==== Diagnosis Result figure & checklist (add-on) ==== */
+
+/* ここを置き換え：カードをはみ出し可＋背景は透明 */
+.card--figure{
+  position: relative;
+  background: transparent;   /* ← 以前の var(--accent) は外す */
+  color:#fff;
+  overflow: visible;
+}
+
+/* チェックリスト（◯＋チェック） */
+.checklist{ 
+  list-style:none; 
+  padding:0; 
+  margin:8px 0 0; 
+}
+.checklist li{
+  position:relative; 
+  padding-left:30px; 
+  margin:10px 0; 
+  line-height:1.8;
+}
+.checklist li::before{
+  content:""; 
+  position:absolute; 
+  left:0; top:.35em; 
+  width:20px; 
+  height:20px; 
+  border-radius:50%;
+  border:2px solid var(--text); 
+}
+
+.checklist li::after{
+  content:""; 
+  position:absolute; 
+  left:5px; 
+  top:.72em; 
+  width:8px; 
+  height:4px; 
+  border-left:2px solid var(--text); 
+  border-bottom:2px solid var(--text); 
+  transform:rotate(-45deg);
+}
+
+/* ページ縁の細いライン（お好みで） */
+@media (min-width:1025px){
+  .diag{ box-shadow:inset 4px 0 0 rgba(219,0,55,.25), inset -4px 0 0 rgba(219,0,55,.25); }
+}
+
+/* レスポンシブ */
+@media (max-width:1024px){
+  .diag__inner{ grid-template-columns:280px 1fr; gap:24px; }
+}
+@media (max-width:768px){
+  .diag__inner{ grid-template-columns:1fr; }
+  .diag .card{ position:static; }
+  .diag{ padding:28px 0; }
+  .diag-sec{ padding:16px; }
+}
+
+/* ===== bottom tune v1.2 ===== */
+
+/* セクション～フッターの間を少し詰める */
+.diag-sec:last-of-type{ margin-bottom:24px; }
+
+.diag__footer{
+  display: grid;                           
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  justify-content: stretch;                
+  align-items: stretch;
+  margin: 28px 0 86px;
+}
+
+.diag__footer .btn{
+  display: flex;                          
+  justify-content: center;
+  align-items: center;
+  width: 100%;                             /* 幅いっぱいに */
+  min-width: 0;                            /* 既存の min-width:260px を打ち消す */
+  box-sizing: border-box;
+  border-radius: 999px;
+  padding:20px;
+}
+
+/* SP は縦積み（今まで通り） */
+@media (max-width: 640px){
+  .diag__footer{
+    grid-template-columns: 1fr;
+  }
+}
+
+.btn--solid{
+  color:#fff; 
+  background:var(--accent);
+  font-size: 15px;
+  padding:10px 20px;
+}
+
+.btn--solid:hover{ 
+  transform:translateY(-1px); 
+  box-shadow:0 6px 16px rgba(0,0,0,.12); 
+}
+
+.btn--ghost{
+  color:var(--accent); 
+  background:#fff; 
+  border:2px solid var(--accent);
+  padding:10px 20px;
+  font-size: 15px;
+}
+
+.btn--ghost:hover{
+  border-color:var(--accent-2); 
+  color:#fff; 
+  background:var(--accent);
+}
+
+/* ページの赤いフレーム（上下も回す版） */
+.diag{ position:relative; padding-bottom:86px; } /* 余白を少し追加 */
+
+/* 「ページトップへ」固定ボタンが被らないよう余白を確保（テーマ側クラス想定） */
+.pagetop, .page-top, .to-top, .scroll-top{
+  bottom:28px !important; right:28px !important;
+}
+
+/* ===== left card tune (pill, toc, buttons) ===== */
+
+.card__chip small{ color:#666; font-weight:600; }
+
+.card__toc li{ padding:8px 0;}
+.card__toc li:last-child{ border-bottom:none; }
+.card__toc a{ display:flex; align-items:center; gap:8px; color:#333; text-decoration:none; }
+
+/* カード内2ボタン */
+.card__actions{
+  display:flex; gap:10px; margin-top:12px;
+}
+.card__actions .btn{
+  flex:1 1 auto; display:inline-flex; justify-content:center; align-items:center;
+  padding:12px 14px; border-radius:999px; font-weight:700; text-decoration:none; line-height:1;
+}
+.card__actions .btn--ghost{ color:var(--accent); background:#fff; border:2px solid var(--accent); }
+.card__actions .btn--solid{ color:#fff; background:var(--accent); }
+
+/* SPで縦積み */
+@media (max-width:640px){
+  .card__actions{ flex-direction:column; }
+}
+
+/* ==== page red frame (Figma) ==== */
+.diag{ position:relative; background:#F2F4F6; }
+.diag__inner{ position:relative; z-index:1; }  /* 枠の上に中身を載せる */
+
+/* 行間と余白を少し広めに調整 */
+.diag-sec__lead{ 
+  line-height:1.9; 
+  margin-bottom:10px;
+  padding: 20px 0;
+  font-size: 15px; 
+}
+
+.checklist li{ 
+  line-height:1.9;
+  font-size: 18px;
+ }
+
+/* SP最適化 */
+@media (max-width:640px){
+  .diag-sec__title{ align-items:flex-start; flex-wrap:wrap; gap:8px; }
+  .diag-sec__title .pill{ margin-left:0; }
+}
+
+.diag__aside{ position: relative; z-index: 0; }
+
+.diag .card{ position: relative; z-index: 1; }
+
+/* === 結果テンプレだけ、上方向のはみ出しを許可 === */
+body.page-template-page-diagnosis-result-a .site-main,
+body.page-template-page-diagnosis-result-b .site-main,
+body.page-template-page-diagnosis-result-c .site-main,
+body.page-template-page-diagnosis-result-d .site-main,
+body.page-template-page-diagnosis-result-e .site-main,
+body.page-template-page-diagnosis-result-a .content-area,
+body.page-template-page-diagnosis-result-b .content-area,
+body.page-template-page-diagnosis-result-c .content-area,
+body.page-template-page-diagnosis-result-d .content-area,
+body.page-template-page-diagnosis-result-e .content-area,
+body.page-template-page-diagnosis-result-a .l-contents,
+body.page-template-page-diagnosis-result-b .l-contents,
+body.page-template-page-diagnosis-result-c .l-contents,
+body.page-template-page-diagnosis-result-d .l-contents,
+body.page-template-page-diagnosis-result-e .l-contents,
+body.page-template-page-diagnosis-result-a .wrap,
+body.page-template-page-diagnosis-result-b .wrap,
+body.page-template-page-diagnosis-result-c .wrap,
+body.page-template-page-diagnosis-result-d .wrap,
+body.page-template-page-diagnosis-result-e .wrap{
+  overflow: visible !important;
+}
+
+/* ==============================
+   2) レイアウト: 左カラムを“さらに左”へ
+   ============================== */
+@media (min-width:1025px){
+  .diag__inner{
+    grid-template-columns: 360px 1fr; /* 320→360で左カラムを広げる */
+    column-gap: 36px;
+  }
+  .diag__aside{
+    margin-left: -72px; /* ← 左に寄せる（-40〜-100の範囲で好みに） */
+  }
+}
+
+/* SP は控えめ（はみ出しを弱める） */
+@media (max-width:640px){
+  .diag__aside{ margin-left: 0; }
+  .diag .card{ top: 24px; }
+}
+
+/* === 左カードの円を疑似要素化して、テキスト群をひとかたまりに === */
+
+/* 既存の card デザインは白箱前提なので、左カードでは透明にする */
+.result-card{
+  position: static;
+  top: 10px;
+  background: transparent;   /* ← 白ベタをやめる */
+  box-shadow: none;
+  padding: 0;                /* 余白は各要素で管理 */
+}
+
+/* 上部の白ピル（既存の .card__chip 相当） */
+.result-hero__chip{
+  display:inline-flex; 
+  align-items:center; 
+  gap:10px;
+  background:#fff; 
+  color:#DB0037; 
+  border-radius:999px;
+  white-space: nowrap;   /* ← 改行させない */
+  flex-wrap: nowrap;     /* ← 念のため折り返し不可 */
+  width: fit-content;    /* 内容分の幅に */
+  max-width: 100%;       /* 親をはみ出さない */
+  padding:12px 20px; 
+  font-weight:700;
+  font-size: 20px;
+  letter-spacing: -0.04em; 
+  z-index:2;
+}
+
+.result-hero__chip span,
+.result-hero__chip small{
+  display: inline-block; /* 念のため */
+}
+
+.result-hero__chip small{ 
+  color:var(--text); 
+  font-size: 14px;
+  font-weight:600; }
+
+@media (max-width: 480px){
+  .result-hero__chip{
+    white-space: normal;
+    flex-wrap: wrap;
+  }
+}
+
+/* テキストの見た目 */
+.result-hero__eyebrow{
+  color:#fff; font-size:20px; opacity:.9; margin:6px 0 6px;
+}
+
+.result-hero__type::first-letter{
+  font-size: 1.6em;         /* 好きな倍率に。例: 1.6倍 */
+  line-height: .9;          /* 下のはみ出しを少し抑える */
+  margin-right: .08em;      /* 「タイプ」との詰め微調整 */
+  font-family: "Righteous";
+}
+
+.result-hero__type{
+  color:#fff; font-weight:900; font-size:42px; line-height:1.15; margin:0 0 10px;
+}
+.result-hero__score{
+  color:#fff; font-weight:800; font-size:38px; margin:0 0 10px;
+}
+
+/* 目次だけ白い箱で囲む（既存を強化） */
+/* 目次＋ボタンの白い箱 */
+.diag .card__panel{
+  background:#fff;
+  border-radius:16px;
+  padding: 30px 10px 30px 24px;
+}
+
+/* 目次リストは素の箱に（中身だけ） */
+.diag .card__panel .card__toc{
+  background:transparent;
+  border-radius:0;
+  padding:0;
+  margin:0;
+  box-shadow:none;
+}
+
+/* 目次の各行・区切り線はそのまま */
+.diag .card__panel .card__toc li{
+  padding:8px 0;
+}
+.diag .card__panel .card__toc li:last-child{ border-bottom:none; }
+
+/* ボタンは白枠の中で横並び＋上に薄い区切り */
+.diag .card__panel .card__actions{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+  padding-top:12px;
+}
+.diag .card__panel .card__actions .btn{
+  flex:1 1 auto;
+  border-radius:999px;
+}
+
+.card__toc li{ padding:8px 0;}
+.card__toc li:last-child{ border-bottom:none; }
+.card__toc a{ display:flex; align-items:center; gap:8px; font-size: 15px; color:#333; text-decoration:none; }
+
+/* カード内の2ボタン（既存流用） */
+.card__actions{ display:flex; gap:10px; margin-top:12px; }
+.card__actions .btn{ flex:1 1 auto; }
+
+/* 旧方式の円は使わない */
+.card__figure{ display:none !important; }
+
+/* 円コンテナ（カードの最前面に載せる） */
+.circles{
+  position:absolute; inset:0;
+  pointer-events:none;
+  z-index:1; /* テキストより背面にしたい時は 1、テキストは z-index:2 */
+}
+
+/* aside を基準（背面円の基点）に */
+.diag__aside{ position:relative; z-index:0; }
+
+/* 3つの円（見た目と位置） */
+.bg{ position:absolute; border-radius:50%; filter:drop-shadow(0 12px 28px rgba(0,0,0,.10)); }
+
+/* 濃いピンクの大円（左上にせり上げ） */
+.bg--lg{
+  width:740px; height:740px;
+  top:-400px; left:-400px;
+  background: var(--accent);
+}
+
+/* 左の小円（本文の左あたり） */
+.bg--sm{
+  width:125px; height:125px;
+  left:-360px; top:200px;
+  background: var(--accent-2);
+}
+
+/* 右上の中円（カード右上の少し上） */
+.bg--md{
+  width:216px; height:216px;
+  right:-60px; top:-200px;
+  background: var(--accent-2);
+}
+
+/* カードは前面・透過 */
+.diag .card.result-card{
+  position: static; 
+  margin-top:10px;
+  background: transparent !important;
+  box-shadow:none !important;
+  z-index:1;
+}
+
+/* スマホ位置調整（必要に応じて） */
+@media (max-width:640px){
+  .bg--lg{ width:360px; height:360px; top:-100px; left:-200px; }
+  .bg--md{ width:120px; height:120px; right:-6px; top:-12px; }
+  .bg--sm{ width:70px;  height:70px;  left:-200px; top:200px; }
+}
+
+/* チップの中は絶対に折り返さない */
+.result-hero__chip{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;      /* 改行禁止 */
+  flex-wrap: nowrap;
+  word-break: keep-all;     /* CJK でも改行しない */
+  overflow-wrap: normal;    /* anywhere/break-word を無効化 */
+  width: max-content;   
+  max-width: none;
+}
+
+/* 子要素側で block 指定や 100% 幅が当たっても横並びにする */
+.result-hero__chip span,
+.result-hero__chip small{
+  display: inline-block;
+  white-space: inherit;
+  word-break: inherit;
+  overflow-wrap: inherit;
+}
+
+/* SP：幅が狭い時だけ折り返しを許可して箱内に収める */
+@media (max-width: 480px){
+  .result-hero__chip{
+    white-space: normal;     /* 折り返し可 */
+    word-break: normal;
+    overflow-wrap: break-word;
+    width: auto;
+    max-width: calc(100% - 24px); /* 余白分を差し引いて収める（任意） */
+  }
+}
+
+/* ▼ ヒーローのテキスト群を中央寄せにする（HTML変更なし） */
+.result-hero{
+  display:flex;
+  flex-direction:column;
+  align-items:center;   /* 横方向を中央に */
+  text-align:center;    /* テキストも中央に */
+  gap:8px;
+  padding:18px 0 12px;  /* 左右パディングは不要なので0 */
+  margin:0 auto 12px;   /* 親の中でブロックごと中央に */
+  width:fit-content;    /* 内容分の幅で気持ちよく中央に */
+  z-index:2;
+}
+
+
+
+.result-hero__chip{
+  margin:0 auto 10px;   /* 白ピルも中央に */
+  white-space:nowrap;   /* 折り返し防止（SPは下の媒体クエリで解除可） */
+  display:inline-flex;
+}
+
+/* 必要ならSPだけ折り返しOKにする */
+@media (max-width:480px){
+  .result-hero__chip{ white-space:normal; flex-wrap:wrap; }
+}
+
+@media (max-width:640px){
+  .result-hero{
+    align-items:flex-start;
+    text-align:left;
+  }
+  .result-hero__chip{ align-self:flex-start; }
+}
+
+/* サイドに薄い赤線を作っている inset の影も消しておく */
+@media (min-width:1025px){
+  body.page-template-page-diagnosis-result-a .diag{
+    box-shadow: none !important;
+  }
+}
+
+
+/* ページの色（マスク用）・余白・角丸はここで揃える */
+body.page-template-page-diagnosis-result-a{
+  --page-bg:     #F2F4F6;  /* 背景色（いまのページ地色） */
+  --frame-gap:   28px;     /* 枠と画面端の余白 */
+  --frame-radius:12px;     /* 枠の角丸 */
+}
+
+/* ===== force Righteous for latin/digits (最後に置く) ===== */
+
+/* ヒーローの Aタイプ / 信頼度 */
+.diag .result-hero__type,
+.diag .result-hero__score,
+.diag .result-hero__score .font-num{
+  font-family: "Righteous","Noto Sans JP",sans-serif !important;
+  font-variant-numeric: lining-nums; /* 半角数字の見栄えを整える */
+}
+
+/* 目次の丸数字・セクション番号も統一 */
+.diag .diag-sec__title .num,
+.diag .card__toc .n{
+  font-family: "Righteous","Noto Sans JP",sans-serif !important;
+  font-variant-numeric: lining-nums;
+  /* 目次の数字を丸なしの「1」に */
+  display:inline;     /* デフォルトのインラインに */
+  width:auto; height:auto;
+  margin-right:8px;
+  padding:0;
+  background:none;
+  border:0;
+  border-radius:0;
+  color:var(--accent);
+  font-family:'Righteous','Noto Sans JP',sans-serif; /* 数字はRighteousで */
+  font-weight:800;
+  font-size:31px;     /* お好みで調整 */
+  line-height:1;
+}
+
+
+/* 汎用（必要に応じて使えるフック） */
+.diag .en,
+.diag .latin,
+.diag [lang="en"],
+.diag .font-num{
+  font-family: "Righteous","Noto Sans JP",sans-serif !important;
+  font-variant-numeric: lining-nums;
+}
+
+/* 目次だけ：丸を外して「1,2,3…」表示にする */
+.diag .card__panel .card__toc .n{
+  display:inline;
+  width:auto; height:auto;
+  margin-right:8px;
+  padding:0;
+  background:none;
+  border:0;
+  border-radius:0;
+  color:var(--accent);
+  font-family:'Righteous','Noto Sans JP',sans-serif;
+  font-weight:800;
+  font-size:31px;
+  line-height:1;
+}
+
+/* 見出しの番号は“ピンクの丸＋白字”を維持（強めに指定） */
+.diag .diag-sec__title .num{
+  display:inline-grid;
+  place-items:center;
+  width:64px; height:64px;
+  border-radius:999px;
+  color:#fff;
+  background:var(--accent);
+  line-height:1;
+  font-family:'Righteous','Noto Sans JP',sans-serif;
+  font-size:45px;
+  font-weight:800;
+}
+
+/* スマホは少し余白を詰める */
+@media (max-width: 640px){
+  body.page-template-page-diagnosis-result-a{
+    --frame-gap: 10px;
+  }
+}
+
+/* 本文とカードは円より前面へ */
+body.page-template-page-diagnosis-result-a .diag__inner,
+body.page-template-page-diagnosis-result-a .diag__content,
+body.page-template-page-diagnosis-result-a .diag .card{
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Diagnosis A ページだけ、ヘッダーを完全に透過にする ── */
+
+/* 1) ヘッダー本体 */
+body.page-template-page-diagnosis-result-a #header,
+body.page-template-page-diagnosis-result-a .site-header,
+body.page-template-page-diagnosis-result-a #masthead,
+body.page-template-page-diagnosis-result-a .l-header{
+  position: relative;
+  z-index: 400;                /* 枠(320)より大きく */
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+/* ヘッダー内のラッパーも念のため透過 */
+body.page-template-page-diagnosis-result-a #header .wrap,
+body.page-template-page-diagnosis-result-a #header .inner,
+body.page-template-page-diagnosis-result-a .site-header .wrap,
+body.page-template-page-diagnosis-result-a .site-header .inner,
+body.page-template-page-diagnosis-result-a .l-header .l-header__inner{
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* テーマが疑似要素で塗っている場合に備えてオフ */
+body.page-template-page-diagnosis-result-a #header::before,
+body.page-template-page-diagnosis-result-a #header::after,
+body.page-template-page-diagnosis-result-a .site-header::before,
+body.page-template-page-diagnosis-result-a .site-header::after,
+body.page-template-page-diagnosis-result-a .l-header::before,
+body.page-template-page-diagnosis-result-a .l-header::after{
+  content: none !important;
+}
+
+/* スクロールで fixed / sticky になった時も透過のまま */
+body.page-template-page-diagnosis-result-a .is-fixed #header,
+body.page-template-page-diagnosis-result-a .is-stuck #header,
+body.page-template-page-diagnosis-result-a .is-fixed .site-header,
+body.page-template-page-diagnosis-result-a .is-stuck .site-header{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+body.page-template-page-diagnosis-result-a .diag__inner{ position:relative; z-index: 2; }
+
+body.page-template-page-diagnosis-result-a .diag{
+  margin-top: calc(-1 * var(--header-h));  /* 上へ引き上げる */
+  padding-top: var(--header-h);            /* 本文は元の位置に */
+}
+
+/* すでに入れてある “overflow: visible” はそのままでOK */
+
+body.page-template-page-diagnosis-result-a .site,
+body.page-template-page-diagnosis-result-a .site::before,
+body.page-template-page-diagnosis-result-a .header-wrap,
+body.page-template-page-diagnosis-result-a .header-wrap::before{
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* スマホは余白だけ少し詰めたい場合（任意） */
+@media (max-width: 640px){
+  body.page-template-page-diagnosis-result-a{ --frame-gap: 10px; }
+}
+
+/* ヒーローのテキスト群を上げ下げ（マイナスで上へ、プラスで下へ） */
+body.page-template-page-diagnosis-result-a{
+  --hero-shift-y: -300px;  /* 例：-40pxで少し上へ。-60px/-80px…でもOK */
+}
+
+body.page-template-page-diagnosis-result-a .result-hero{
+  margin-top: var(--hero-shift-y) !important;
+}
+
+/* SPは控えめにしたい場合 */
+@media (max-width: 640px){
+  body.page-template-page-diagnosis-result-a{ --hero-shift-y: -20px; }
+}
+
+/* ③ フッター直前で枠を止める（実在する方に合わせて1つだけ残す） */
+body.page-template-page-diagnosis-result-a .foot{
+  position: relative;
+  z-index: 1000; /* 枠より上の層に */
+}
+/* 円が上に出るよう、親の overflow は開放 */
+body.page-template-page-diagnosis-result-a .site,
+body.page-template-page-diagnosis-result-a .site-content,
+body.page-template-page-diagnosis-result-a .content-area,
+body.page-template-page-diagnosis-result-a .wrap,
+body.page-template-page-diagnosis-result-a main{
+  overflow:visible !important;
+}
+
+/* 診断A：フレームを .diag の先頭で sticky 表示（ヘッダー直下から開始） */
+body.page-template-page-diagnosis-result-a .diag{
+  position: relative;
+}
+
+/* 1) main.diag の “上マージン” を消しておく（テーマ既定を打ち消し） */
+body.page-template-page-diagnosis-result-a main.diag{
+  margin-top: 0 !important;
+}
+
+/* main の上マージンを消して位置ズレをなくす（テーマ既定の 20px 対策） */
+body.page-template-page-diagnosis-result-a main.diag{
+  margin-top: 0 !important;
+}
+
+/* 中身を前面へ */
+body.page-template-page-diagnosis-result-a .diag__inner{
+  position: relative;
+  z-index: 2;
+}
+
+/* 2) 枠は .diag（sticky）だけ。中身は前面、枠は背面に固定 */
+.body.page-template-page-diagnosis-result-a .diag__inner{
+  position: relative;
+  z-index: 2;               /* ← 中身を前面へ */
+}
+
+/* 4) もし上部に大きな空白が出る場合は、一旦ヒーローの引き上げを解除 */
+@media (min-width:641px){
+  body.page-template-page-diagnosis-result-a{ --hero-shift-y: 0px; }
+}
+
+body.page-template-page-diagnosis-result-a .diag{
+  margin-top: calc(-1 * var(--header-h));
+  padding-top: var(--header-h);
+}
+
+/* フッター手前で止める（footer= .foot を前面に） */
+body.page-template-page-diagnosis-result-a .foot{
+  position: relative !important; 
+  z-index: 1000 !important;
+}
+
+@media (max-width:640px){
+  body.page-template-page-diagnosis-result-a{ --header-h:96px; }
+}
+
+/* 4) ヘッダーを“完全に透過”に（テーマ側の背景や疑似要素も殺す） */
+body.page-template-page-diagnosis-result-a #header,
+body.page-template-page-diagnosis-result-a .site-header,
+body.page-template-page-diagnosis-result-a .l-header{
+  position:relative;
+  background:transparent !important;
+  box-shadow:none !important;
+  border:0 !important;
+}
+body.page-template-page-diagnosis-result-a #header::before,
+body.page-template-page-diagnosis-result-a #header::after,
+body.page-template-page-diagnosis-result-a .site-header::before,
+body.page-template-page-diagnosis-result-a .site-header::after,
+body.page-template-page-diagnosis-result-a .l-header::before,
+body.page-template-page-diagnosis-result-a .l-header::after{
+  content:none !important;
+}
+
+/* 4) ヘッダーは最前面に（見た目は“普通のまま”） */
+body.page-template-page-diagnosis-result-a #header,
+body.page-template-page-diagnosis-result-a .site-header{
+  position:relative;
+  z-index:400 !important;     /* 枠(320)より上ならOK */
+  /* background は触らない：テーマのまま表示 */
+}
+
+/* ヘッダーは枠より上の層に（背景あり） */
+body.page-template-page-diagnosis-result-a #header,
+body.page-template-page-diagnosis-result-a .site-header{
+  position:relative;
+  z-index:401 !important;                  /* ← header(>=400)よりわずかに上なら何でもOK */
+  background:#fff !important;
+}
+
+
+/* フッター直前で“自然に止める”ためのマスク（テーマの .foot を前面に） */
+body.page-template-page-diagnosis-result-a .foot{
+  position:relative !important;
+  z-index:1000 !important;                   /* ← ここが -1 だと止まりません */
+}
+
+
+/* ヘッダーは常に枠より前面（見た目は今のまま） */
+body.page-template-page-diagnosis-result-a #header,
+body.page-template-page-diagnosis-result-a .site-header{
+  position: relative !important;
+  z-index: 9999 !important;
+  background: #fff !important;
+}
+
+/* ヘッダーは枠より上の層に */
+body.page-template-page-diagnosis-result-a #header,
+body.page-template-page-diagnosis-result-a .site-header{
+  position:relative !important;
+  z-index:401 !important;
+}
+
+/* フッター直前で枠を隠して“止める” */
+body.page-template-page-diagnosis-result-a .foot{
+  position:relative !important;
+  z-index:1000 !important;
+}
+
+
+body.page-template-page-diagnosis-result-a #header,
+body.page-template-page-diagnosis-result-a .site-header{
+  position: relative;
+  z-index: 401;                                         /* 380より大きく */
+}
+
+/* 1) フッターで枠を止める：overflow を可視化 + マスクを前面に */
+body.page-template-page-diagnosis-result-a .foot{
+  position:relative !important;
+  z-index:1000 !important;
+  overflow:visible !important;             /* ← ここが重要！ */
+}
+
+
+/* スクロールで fixed/sticky になるやつも同じ値で */
+body.page-template-page-diagnosis-result-a .is-fixed #header,
+body.page-template-page-diagnosis-result-a .is-stuck #header,
+body.page-template-page-diagnosis-result-a .is-fixed .site-header,
+body.page-template-page-diagnosis-result-a .is-stuck .site-header{
+  z-index: 401 !important;
+}
+
+/* ヘッダー背景を ::before で塗っている場合だけ */
+body.page-template-page-diagnosis-result-a #header::before,
+body.page-template-page-diagnosis-result-a .site-header::before{
+  background: #fff;   /* 必要なときだけ */
+}
+
+/* 3) ヘッダーは枠より前面（見た目は通常表示） */
+body.page-template-page-diagnosis-result-a #header,
+body.page-template-page-diagnosis-result-a .site-header{
+  position:relative !important;
+  z-index:401 !important;         /* 枠(380)より高ければOK */
+  background:#fff !important;     /* 透過指定が残っている場合の保険 */
+}
+
+/* 5) フッター直前で枠を“止める”（フッターを前面に） */
+body.page-template-page-diagnosis-result-a footer.foot{
+  position:relative !important;
+  z-index:1000 !important;        /* 枠(380)より上の層に */
+}
+
+/* TOC：最初はグレー → hoverでピンク（数字も一緒に） */
+.diag .card__toc a{
+  color:#B7B7B7;                
+  text-decoration:none;
+  transition:color .2s ease;
+}
+.diag .card__toc a:visited{ color:#B7B7B7; }  
+
+.diag .card__toc a .n{
+  color:currentColor !important;    
+  border-color:currentColor !important; 
+}
+
+.diag .card__toc a:hover,
+.diag .card__toc a:focus-visible{
+  color:var(--accent);             
+}
+
+/* ==== A結果ページ：左カードのテキスト群を 左＆上 に寄せる（レスポンシブ） ==== */
+/* 触るのは --toc-shift-x / --toc-shift-y の値だけでOK（負数=左/上に寄る） */
+body.page-template-page-diagnosis-result-a{
+  --toc-shift-x: clamp(-220px, -18vw, -80px);  /* ← もっと左にしたければ負数を大きく */
+  --toc-shift-y: clamp(-48px,  -5vw, -12px);   /* ← もっと上にしたければ負数を大きく */
+}
+
+@media (min-width:1025px){
+  /* 白ピル＋Aタイプ＋信頼度の並び */
+  body.page-template-page-diagnosis-result-a .result-hero{
+    transform: translate(var(--toc-shift-x), calc(var(--toc-shift-y) - 8px)) !important;
+    will-change: transform;
+  }
+  /* 目次とボタンが入っている白い箱（.card__panel） */
+  body.page-template-page-diagnosis-result-a .card__panel{
+    transform: translate(var(--toc-shift-x), var(--toc-shift-y)) !important;
+    will-change: transform;
+  }
+}
+
+/* ① ヒーローをカードと同じ幅にして中央配置 */
+.result-hero{
+  width: 100%;              /* ← fit-content をやめる */
+  max-width: 100%;
+  margin: 0 auto 12px;      /* 左カラム内で中央に */
+  display: grid;
+  place-items: center;      /* 横も縦も中央 */
+  text-align: center;
+}
+
+/* ② 以前の「左へずらす」指定を打ち消す（残っていれば） */
+@media (min-width:1025px){
+  .result-hero{ transform: none !important; }
+}
+
+/* ③ SPでも中央のままに（左寄せしていた場合の上書き） */
+@media (max-width:640px){
+  .result-hero{ text-align: center; align-items: center; }
+}
+
+/* チップも中央に（念のため） */
+.result-hero__chip{ margin-left:auto; margin-right:auto; }
+
+/* A結果ページの上余白を詰める（デスクトップ/スマホで調整） */
+body.page-template-page-diagnosis-result-a{ --header-h: 20px; }        /* PC */
+@media (max-width: 640px){
+  body.page-template-page-diagnosis-result-a{ --header-h: 72px; }      /* SP */
+}
+
+/* 円：ここはスクロールして動く */
+.circles{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+.bg{ position:absolute; border-radius:50%; filter:drop-shadow(0 12px 28px rgba(0,0,0,.10)); }
+
+/* 値だけで位置調整（PC） */
+:root{
+  --lg-x:-220px; --lg-y:-300px; --lg-s:740px;      /* 大円 */
+  --md-x: 360px; --md-y:-100px; --md-s:216px;      /* 中円 */
+  --sm-x:-100px; --sm-y: 300px; --sm-s:125px;      /* 小円 */
+}
+.bg--lg{ left:var(--lg-x); top:var(--lg-y); width:var(--lg-s); height:var(--lg-s); background:var(--accent); }
+.bg--md{ left:var(--md-x); top:var(--md-y); width:var(--md-s); height:var(--md-s); background:var(--accent-2); }
+.bg--sm{ left:var(--sm-x); top:var(--sm-y); width:var(--sm-s); height:var(--sm-s); background:var(--accent-2); }
+
+/* SPだけ位置/サイズを差し替えたい時 */
+@media (max-width:640px){
+  :root{
+    --lg-x:-200px; --lg-y:-100px; --lg-s:360px;
+    --md-x:  -6px; --md-y: -12px; --md-s:120px;
+    --sm-x:-200px; --sm-y: 200px; --sm-s: 70px;
+  }
+}
+
+
+/* 旧い transform 指定を殺す（残っていても無効化） */
+body.page-template-page-diagnosis-result-a .result-hero,
+body.page-template-page-diagnosis-result-a .card__panel{
+  transform: none !important;
+}
+
+/* グリッドで中央配置にする */
+body.page-template-page-diagnosis-result-a .diag__aside{
+  display: grid;           /* 既に grid ならそのまま */
+  justify-items: center;   /* 子要素を水平方向センターに */
+  margin:-10px -20px;
+}
+
+/* ヒーローの位置とサイズ（カードの真上で中央） */
+body.page-template-page-diagnosis-result-a .result-hero{
+  justify-self: center;    /* 念のため個別にも指定 */
+  align-self: start;       /* 上寄せ（中央で上側に） */
+  margin: 0 0 12px;
+  width: min(92vw, 360px);
+}
+
+/* PCで微調整したい時は変数風に上書き */
+@media (min-width:1025px){
+  body.page-template-page-diagnosis-result-a .result-hero{
+    margin-top: -10px;     /* 好みに合わせて数値を調整 */
+    width: 360px;
+  }
+}
+
+/* SPはそのまま中央でOK */
+@media (max-width:640px){
+  body.page-template-page-diagnosis-result-a .result-hero{
+    margin-top: 0;
+    width: min(92vw, 420px);
+  }
+}
+
+/* PCだけ左カラムを左にオフセット */
+@media (min-width: 1025px){
+  /* どれくらい寄せるかは数値だけ調整（-40〜-160pxあたりで好み） */
+  body.page-template-page-diagnosis-result-a .diag__aside{
+    margin-left: clamp(-160px, -8vw, -80px); /* ←お好みで */
+    /* position: relative; left: -80px; でもOK */
+  }
+
+  /* 中身は左揃えにしておく（中央寄せ指定を打ち消し） */
+  body.page-template-page-diagnosis-result-a .diag__aside{
+    display: grid;           /* 既に grid ならこの行は不要 */
+    justify-items: start;    /* 子要素（ヒーロー/カード）を左揃え */
+  }
+
+  body.page-template-page-diagnosis-result-a .card__panel{
+    justify-self: start;     /* 念のため明示 */
+    transform: none;         /* 以前の translate 指定が残ってたら無効化 */
+  }
+}
+
+/* ヘッダーは枠より前面（見た目は既存のままでOK） */
+.page-template-page-diagnosis-result-a #header,
+.page-template-page-diagnosis-result-a .site-header{
+  position:relative;
+  z-index:401;               /* 380 より大きければOK */
+}
+
+/* 本文はヘッダー直下から始まるように（被り防止） */
+.page-template-page-diagnosis-result-a .diag{
+  margin-top: calc(-1 * var(--header-h));
+  padding-top: var(--header-h);
+}
+
+/* フッターを枠より前面に */
+.page-template-page-diagnosis-result-a .foot{
+  position:relative;
+  z-index:1000;  /* 枠(380)より前 */
+  overflow:visible; /* 念のため */
+}
+
+/* 祖先でクリップされないよう overflow を開放（必要な範囲でOK） */
+.page-template-page-diagnosis-result-a .site,
+.page-template-page-diagnosis-result-a .site-content,
+.page-template-page-diagnosis-result-a .content-area,
+.page-template-page-diagnosis-result-a .wrap,
+.page-template-page-diagnosis-result-a main{ overflow:visible; }
+
+/* circles を“ページの上に食い込ませる” */
+.page-template-page-diagnosis-result-a .diag__aside{ position:relative; z-index:0; }
+.page-template-page-diagnosis-result-a .circles{
+  position:absolute; left:0; right:0;
+  top: calc(-1 * var(--header-h));    /* ← ここでヘッダー分せり上げる */
+  pointer-events:none; z-index:0;
+}
+
+@media (max-width:640px){
+  :root{ --header-h:96px; }
+}
+html.admin-bar{ --adminbar: var(--wp-admin--admin-bar--height, 46px); }
+@media (max-width:782px){ html.admin-bar{ --adminbar:46px; } }
+
+
+/* === 2) Aページ共通：本文をヘッダー直下に配置 === */
+body.page-template-page-diagnosis-result-a .diag{
+  margin-top: calc(-1 * var(--header-h));
+  padding-top: var(--header-h);
+}
+
+/* === 3) ヘッダーは枠より前面（背景ありをデフォ） === */
+body.page-template-page-diagnosis-result-a :is(#header,.site-header,.l-header){
+  position: relative;
+  z-index: 401;
+  background: #fff; /* 透過をやめたい場合はここで固定 */
+}
+
+
+/* === 5) フッターで枠を“止める”：マスクは1定義だけ === */
+body.page-template-page-diagnosis-result-a .foot{
+  position: relative;
+  z-index: 1000; /* 枠(380)より上に */
+  overflow: visible; /* 念のため */
+}
+body.page-template-page-diagnosis-result-a .foot::before{
+  content:"";
+  position:absolute;
+  left:  calc(-1 * var(--frame-gap));
+  right: calc(-1 * var(--frame-gap));
+  top:   calc(-1 * var(--frame-gap)); /* 枠に少しかぶせてカット */
+  bottom:0;
+  background: var(--page-bg);
+  pointer-events: none;
+  z-index: -1; /* foot本文の背面だがページ全体では枠より前（親が1000） */
+}
+
+/* === 6) 円デコは目的別に1カ所で === */
+.page-template-page-diagnosis-result-a .circles{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+:root{
+  --lg-x:-220px; --lg-y:-300px; --lg-s:740px;
+  --md-x: 360px; --md-y:-100px; --md-s:216px;
+  --sm-x:-100px; --sm-y: 300px; --sm-s:125px;
+}
+.bg{ position:absolute; border-radius:50%; filter:drop-shadow(0 12px 28px rgba(0,0,0,.1)); }
+.bg--lg{ left:var(--lg-x); top:var(--lg-y); width:var(--lg-s); height:var(--lg-s); background:var(--accent); }
+.bg--md{ left:var(--md-x); top:var(--md-y); width:var(--md-s); height:var(--md-s); background:var(--accent-2); }
+.bg--sm{ left:var(--sm-x); top:var(--sm-y); width:var(--sm-s); height:var(--sm-s); background:var(--accent-2); }
+@media (max-width:640px){
+  :root{
+    --lg-x:-200px; --lg-y:-100px; --lg-s:360px;
+    --md-x:  -6px; --md-y: -12px; --md-s:120px;
+    --sm-x:-200px; --sm-y: 200px; --sm-s: 70px;
+  }
+}
+
+/*///////////////////ここから整理後////////////////////////*/
+/* 変数 */
+:root{
+  --frame-color:#B60014;
+  --frame-radius:12px;
+  --page-bg:#F2F4F6;
+  --frame-gap:16px;
+  --header-h:0px;
+  --adminbar:0px;
+}
+
+/* ログイン時の管理バー高さ（WPのCSS変数があればそれを採用） */
+html.admin-bar{ --adminbar: var(--wp-admin--admin-bar--height, 46px); }
+
+/* 枠線：ヘッダー直下から開始（このテンプレ限定） */
+body.page-template-page-diagnosis-result-a .page-frame{
+  position:relative;
+  z-index:380;
+  min-height:100vh;
+}
+body.page-template-page-diagnosis-result-a .page-frame::before,
+body.page-template-page-diagnosis-result-a .page-frame::after{
+  content:"";
+  position:fixed;
+  left:var(--frame-gap);
+  right:var(--frame-gap);
+  top:calc(var(--header-h) + var(--adminbar));
+  bottom:var(--frame-gap);
+  border-radius:var(--frame-radius);
+  pointer-events:none;
+}
+body.page-template-page-diagnosis-result-a .page-frame::before{
+  border:3px solid var(--frame-color);
+  z-index:380;
+}
+body.page-template-page-diagnosis-result-a .page-frame::after{
+  box-shadow:0 0 0 9999px var(--page-bg);
+  z-index:379;
+}
+
+/* 本文をヘッダー直下に配置 */
+body.page-template-page-diagnosis-result-a .diag{
+  margin-top:calc(-1 * var(--header-h));
+  padding-top:var(--header-h);
+}
+
+/* フッター手前で止めるマスク */
+body.page-template-page-diagnosis-result-a .foot{
+  position:relative;
+  z-index:1000; /* 枠(380)より前 */
+  overflow:visible;
+}
+body.page-template-page-diagnosis-result-a .foot::before{
+  content:"";
+  position:absolute;
+  left:calc(-1 * var(--frame-gap));
+  right:calc(-1 * var(--frame-gap));
+  top:calc(-1 * var(--frame-gap)); /* ほんの少し重ねてカット */
+  bottom:0;
+  background:var(--page-bg);
+  pointer-events:none;
+  z-index:-1; /* foot本文の背面だが全体では枠より前 */
+}
+
+
+/* ===== 重なり順の整理（テキストを円の上に） ===== */
+
+/* 円は背面 */
+.circles{
+  position:absolute;
+  inset:0;
+  z-index:0;            /* ← ここを 0（または -1）に */
+  pointer-events:none;
+}
+
+/* aside は基点のまま */
+.diag__aside{ position:relative; z-index:0; }
+
+/* カード＆中のテキスト群は前面 */
+.diag .card.result-card{
+  position:relative;
+  z-index:2;            /* ← 円より前へ */
+  background:#fff;      /* Aと同じ白カードに戻す（透明にしていたら上書き） */
+  box-shadow: 0 12px 28px rgba(0,0,0,.08);
+  border-radius: 16px;
+}
+
+/* ヒーローやTOCも確実に前面（保険） */
+.diag .result-hero,
+.diag .card__panel{ position:relative; z-index:2; }
+
+/* 円に“少しかぶせる”オフセット（PC） */
+:root{ --toc-overlap: 36px; }  /* 好みで 24〜56px くらい */
+@media (max-width: 960px){ :root{ --toc-overlap: 20px; } }
+
+/* カードを上に引き上げて円に乗せる */
+.diag .card.result-card{ margin-top: calc(-1 * var(--toc-overlap)); }
+
+/* もしカード全体ではなく TOC 部分だけを強めに重ねたい場合（お好みで） */
+/*
+.diag .card__panel{ margin-top: -8px; }  // ほんの少しだけかぶせる
+*/
+
+
+/*スマホ-------------------*/
+
+/* ========== SP (design width ~400px) ========== */
+@media (max-width: 480px){
+
+  :root{
+    --sp-side:16px;
+  }
+
+  /* ページ全体 */
+  .diag{
+    background:#F2F4F6;
+    padding:0 0 60px;
+  }
+  .diag__inner{
+    width:100%;
+    max-width:400px;          /* デザイン幅に合わせる */
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1fr; /* 1カラム */
+    gap:20px;
+  }
+
+  /* ヒーロー（上の赤ブロックの文字） */
+  .result-hero{
+    padding: 20px var(--sp-side) 8px;
+    gap:6px;
+    align-items:flex-start;    /* 左寄せデザインに寄せたい場合 */
+    text-align:left;
+  }
+  .result-hero__eyebrow{
+    font-size:13px;
+    opacity:.95;
+    margin:2px 0 2px;
+  }
+  .result-hero__type{
+    font-weight:900;
+    font-size: clamp(40px, 17vw, 56px); /* Aタイプの大きさ */
+    line-height:1.05;
+    letter-spacing:-.01em;
+    margin:2px 0 6px;
+  }
+  /* 「A」だけ少し大きく（既出の .em を利用） */
+  .result-hero__type .em{
+    display:inline-block;
+    font-size:1.22em;
+    line-height:0.9;
+    transform:translateY(2px);
+  }
+  .result-hero__score{
+    font-weight:800;
+    font-size: clamp(22px, 6vw, 32px);
+    margin: 4px 0 0;
+  }
+
+  /* 左のカード（目次） */
+  .diag__aside{
+    margin: 0 var(--sp-side);
+  }
+  .diag .card,
+  .diag .card.result-card{
+    background:#fff;
+    box-shadow:0 8px 24px rgba(0,0,0,.06);
+    border-radius:16px;
+    padding:18px;
+  }
+  .diag .card__panel{        /* 目次＋2ボタンの白箱 */
+    padding:14px;
+    border-radius:12px;
+  }
+  .card__toc a{ font-size:14px; }
+  .card__actions .btn{ padding:12px 14px; }
+
+/* ── セクション見出し（番号＋白ピル）を横一列に固定 ── */
+.diag-sec__title{
+  display:flex !important;
+  align-items:center !important;
+  gap:12px;
+  flex-wrap:nowrap !important;   /* ← ここが決定打 */
+}
+
+/* 番号の丸は固定サイズ */
+.diag-sec__title .num{
+  flex:0 0 56px;                  /* 64pxなら値を合わせてOK */
+  width:56px; height:56px;
+  margin:0;                       /* 余計なマージンをリセット */
+}
+
+/* 白いピルは可変幅。中でテキストを横並び */
+.diag-sec__title .sub-title{
+  flex:1 1 auto;                  /* ← 残り幅を全部使う */
+  min-width:0;                    /* ← 折り返しを許可するため必須 */
+  display:flex;                   /* 左ラベル(txt)＋右テキスト(pill)を横並び */
+  align-items:center;
+  margin-left:-12px !important;       /* 以前の -24px などの重ねを無効化 */
+  padding:14px 20px;
+  background:#fff;
+  border-radius:999px;
+}
+
+/* 左側ラベル（“タイプの概要” 等）は1行でキープ */
+.diag-sec__title .txt{
+  flex:0 0 auto;
+  white-space:nowrap;
+  font-weight:800;
+  color:var(--accent);
+}
+
+/* 右側テキストは折り返しOK（2行で収めたいなら line-clamp を使用） */
+.diag-sec__title .pill{
+  flex:1 1 auto;                  /* ← ここが可変幅 */
+  min-width:0;
+  white-space:normal;
+  line-height:1.6;
+  /* ちょうど2行で切りたい時は下を有効化
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+  */
+}
+
+/* 番号の丸は今のままでOK。必要なら微調整 */
+.diag-sec__title .num{
+  margin-right:0;         /* ピル側で重ねているなら0のまま */
+}
+
+  /* チェックリストの行間と当たり */
+  .checklist{ margin:6px 0 0; }
+  .checklist li{
+    font-size:15px;
+    padding-left:28px;
+    line-height:1.9;
+    margin:8px 0;
+  }
+
+  /* CTA（下の2ボタン） */
+  .diag__footer{
+    margin:24px var(--sp-side) 40px;
+    grid-template-columns:1fr; /* 縦積み */
+    gap:14px;
+  }
+  .diag__footer .btn{
+    width:100%;
+    padding:18px;
+    border-radius:999px;
+    font-weight:800;
+  }
+
+  /* 装飾円（スマホは固定のままでOKに寄せる例） */
+  .bg--lg{ width:360px; height:360px; top:-80px; left:-180px; }
+  .bg--md{ width:110px; height:110px; right:-10px; top:-10px; }
+  .bg--sm{ width:70px;  height:70px;  left:-120px; top:160px; }
+}
